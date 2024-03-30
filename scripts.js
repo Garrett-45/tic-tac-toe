@@ -5,12 +5,15 @@ function player () {
     let player1 = {
         name: "",
         token : "X",
-        title : "Player 1"
+        title : "Player 1",
+        alreadyHadTurn : false
     }
+    
     let player2 = {
         name : "",
         token : "O",
-        title: "Player 2"
+        title: "Player 2",
+        alreadyHadTurn : false
     }
 
 
@@ -89,30 +92,51 @@ function gameBoard () {
 
 const currentGameBoard = gameBoard()
 
+
+
 function gameController () {
 
-    let activePlayer = playerModule.players[0]
+    let activePlayer = ""
 
-    function chooseTile (row, column, currentPlayer) {
+   const chooseTile = function (row, column) {
+        
         if (currentGameBoard.getBoard()[row][column] === "-") {
-            activePlayer = playerModule.players[currentPlayer]
-            currentGameBoard.getBoard()[row][column] = activePlayer.token
+            currentGameBoard.getBoard()[row][column] = activePlayerObj.token
+            gameControl.switchPlayer()
+            console.log(`It is ${activePlayerObj.title}'s turn`)
             console.log(currentGameBoard.getBoard())
+        } else {
+            console.log("Choose a different square")
         }
     }
+
     
-    const active = () => activePlayer
+    let activePlayerObj = () => activePlayer
+    
     function switchTurn () {
+
 
     }
     
-    return {
-        chooseTile,
-        active
-    }
+    const switchPlayer = function () {
+        if (activePlayerObj === playerModule.players[0]) {
+            activePlayerObj = playerModule.players[1]
+            return activePlayerObj
+        } else {
+            activePlayerObj = playerModule.players[0]
+            return activePlayerObj
+        }
+
+
 
 }
 
+return {
+    chooseTile,
+    activePlayerObj,
+    switchPlayer
+}
+}
 
 const gameControl = gameController()
 
