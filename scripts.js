@@ -113,7 +113,33 @@ function gameController () {
     
     let activePlayerObj = () => activePlayer
     
-    function switchTurn () {
+    const checkWinCondition = function () {
+        if ((currentGameBoard.getBoard()[0][0] === currentGameBoard.getBoard()[0][1] && 
+        currentGameBoard.getBoard()[0][1] === currentGameBoard.getBoard()[0][2] && currentGameBoard.getBoard()[0][0] != '-') ||
+        
+        (currentGameBoard.getBoard()[1][0] === currentGameBoard.getBoard()[1][1] && 
+        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[1][2] && currentGameBoard.getBoard()[0][0] != '-') ||
+
+        (currentGameBoard.getBoard()[2][0] === currentGameBoard.getBoard()[2][1] && 
+        currentGameBoard.getBoard()[2][1] === currentGameBoard.getBoard()[2][2] && currentGameBoard.getBoard()[0][0] != '-') ||
+
+        (currentGameBoard.getBoard()[0][0] === currentGameBoard.getBoard()[1][0] && 
+        currentGameBoard.getBoard()[1][0] === currentGameBoard.getBoard()[2][0] && currentGameBoard.getBoard()[0][0] != '-') ||
+        
+        (currentGameBoard.getBoard()[0][1] === currentGameBoard.getBoard()[1][1] && 
+        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][1] && currentGameBoard.getBoard()[0][0] != '-') ||
+
+        (currentGameBoard.getBoard()[0][2] === currentGameBoard.getBoard()[1][2] && 
+        currentGameBoard.getBoard()[1][2] === currentGameBoard.getBoard()[2][2] && currentGameBoard.getBoard()[0][0] != '-') ||
+
+        (currentGameBoard.getBoard()[0][0] === currentGameBoard.getBoard()[1][1] && 
+        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][2] && currentGameBoard.getBoard()[0][0] != '-') ||
+
+        (currentGameBoard.getBoard()[0][2] === currentGameBoard.getBoard()[1][1] && 
+        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][0] && currentGameBoard.getBoard()[0][0] != '-')) {
+            gameControl.gameStatus = gameControl.gameStatuses.gameOver
+            console.log(`${activePlayerObj.title} wins!`)
+        }
 
 
     }
@@ -127,14 +153,22 @@ function gameController () {
             return activePlayerObj
         }
 
+    const gameStatuses = {
+        gameOver : "gameOver",
+        gameActive : "gameActive"
+    }
 
+    const currentGameStatus = ""
 
 }
 
 return {
     chooseTile,
     activePlayerObj,
-    switchPlayer
+    switchPlayer,
+    gameStatus,
+    gameStatuses,
+    checkWinCondition
 }
 }
 
