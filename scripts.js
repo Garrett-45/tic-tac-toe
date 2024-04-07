@@ -76,18 +76,21 @@ function gameBoard () {
 
     const rows = 3
     const columns = 3
-    const board = []
+    let board = []
+    const getBoard = () => board
 
-    for (let i = 0; i < rows; i++) {
-        board[i] = []
+    const setBoard = function () {
+    
+        board = []
+        for (let i = 0; i < rows; i++) {
+            board[i] = []
         for (let j = 0; j < columns; j++) {
             board[i].push("-")
         }
     }
-    const getBoard = () => board
-
-    return {getBoard}
-
+}
+    return {getBoard,
+            setBoard}
 }
 
 const currentGameBoard = gameBoard()
@@ -97,79 +100,107 @@ const currentGameBoard = gameBoard()
 function gameController () {
 
     let activePlayer = ""
+    let getActivePlayerObj = () => activePlayer
+    let currentGameStatus = ""
+
+    
+    // method to choose the tile for the current active player and to check the win condition in between turns.
 
    const chooseTile = function (row, column) {
         
         if (currentGameBoard.getBoard()[row][column] === "-") {
-            currentGameBoard.getBoard()[row][column] = activePlayerObj.token
+            currentGameBoard.getBoard()[row][column] = getActivePlayerObj().token
+            gameControl.checkWinCondition()
+            if (gameControl.currentGameStatus === "gameOver") {
+              console.log("Game is over, start a new game.")  
+            } else if (gameControl.getGameStatus() === "gameActive") {
             gameControl.switchPlayer()
-            console.log(`It is ${activePlayerObj.title}'s turn`)
-            console.log(currentGameBoard.getBoard())
+            console.log(`It is ${getActivePlayerObj().title}'s turn`)
+            console.log(currentGameBoard.getBoard()) 
+            }
+            return currentGameBoard.getBoard()
         } else {
             console.log("Choose a different square")
         }
     }
 
-    
-    let activePlayerObj = () => activePlayer
+    // Win condition checker that checks all possible win conditions after each turn and will change the game status to game over if a win condition is met.
     
     const checkWinCondition = function () {
         if ((currentGameBoard.getBoard()[0][0] === currentGameBoard.getBoard()[0][1] && 
         currentGameBoard.getBoard()[0][1] === currentGameBoard.getBoard()[0][2] && currentGameBoard.getBoard()[0][0] != '-') ||
         
         (currentGameBoard.getBoard()[1][0] === currentGameBoard.getBoard()[1][1] && 
-        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[1][2] && currentGameBoard.getBoard()[0][0] != '-') ||
+        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[1][2] && currentGameBoard.getBoard()[1][0] != '-') ||
 
         (currentGameBoard.getBoard()[2][0] === currentGameBoard.getBoard()[2][1] && 
-        currentGameBoard.getBoard()[2][1] === currentGameBoard.getBoard()[2][2] && currentGameBoard.getBoard()[0][0] != '-') ||
+        currentGameBoard.getBoard()[2][1] === currentGameBoard.getBoard()[2][2] && currentGameBoard.getBoard()[2][0] != '-') ||
 
         (currentGameBoard.getBoard()[0][0] === currentGameBoard.getBoard()[1][0] && 
         currentGameBoard.getBoard()[1][0] === currentGameBoard.getBoard()[2][0] && currentGameBoard.getBoard()[0][0] != '-') ||
         
         (currentGameBoard.getBoard()[0][1] === currentGameBoard.getBoard()[1][1] && 
-        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][1] && currentGameBoard.getBoard()[0][0] != '-') ||
+        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][1] && currentGameBoard.getBoard()[0][1] != '-') ||
 
         (currentGameBoard.getBoard()[0][2] === currentGameBoard.getBoard()[1][2] && 
-        currentGameBoard.getBoard()[1][2] === currentGameBoard.getBoard()[2][2] && currentGameBoard.getBoard()[0][0] != '-') ||
+        currentGameBoard.getBoard()[1][2] === currentGameBoard.getBoard()[2][2] && currentGameBoard.getBoard()[0][2] != '-') ||
 
         (currentGameBoard.getBoard()[0][0] === currentGameBoard.getBoard()[1][1] && 
         currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][2] && currentGameBoard.getBoard()[0][0] != '-') ||
 
         (currentGameBoard.getBoard()[0][2] === currentGameBoard.getBoard()[1][1] && 
-        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][0] && currentGameBoard.getBoard()[0][0] != '-')) {
-            gameControl.gameStatus = gameControl.gameStatuses.gameOver
-            console.log(`${activePlayerObj.title} wins!`)
+        currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][0] && currentGameBoard.getBoard()[0][2] != '-')) {
+            
+            gameControl.currentGameStatus = gameControl.gameStatuses.gameOver
+            console.log(`${getActivePlayerObj().title} wins!`)
+        } 
+
+    }
+    
+    // method to switch the active player after each turn.
+
+    const switchPlayer = function () {
+        if (activePlayer === playerModule.players[0]) {
+            activePlayer = playerModule.players[1]
+            return activePlayer
+        } else {
+            activePlayer = playerModule.players[0]
+            return activePlayer
         }
 
 
     }
-    
-    const switchPlayer = function () {
-        if (activePlayerObj === playerModule.players[0]) {
-            activePlayerObj = playerModule.players[1]
-            return activePlayerObj
-        } else {
-            activePlayerObj = playerModule.players[0]
-            return activePlayerObj
-        }
+
+
+    // method to start the game and set the active player to player 1 and the game status to active.
+
+    const startGame = function () {
+       activePlayer = playerModule.players[0]
+       currentGameStatus = gameControl.gameStatuses.gameActive
+       currentGameBoard.setBoard()
+    }
+
+    // possible game statuses
 
     const gameStatuses = {
         gameOver : "gameOver",
         gameActive : "gameActive"
     }
 
-    const currentGameStatus = ""
+    const getGameStatus = () => currentGameStatus
 
-}
-
-return {
+    return {
     chooseTile,
-    activePlayerObj,
     switchPlayer,
-    gameStatus,
+    currentGameStatus,
     gameStatuses,
-    checkWinCondition
+    checkWinCondition,
+    startGame,
+    getActivePlayerObj,
+    getGameStatus
 }
+
+
 }
 
 const gameControl = gameController()
