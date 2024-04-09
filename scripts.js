@@ -1,3 +1,5 @@
+
+
 function player () {
 
 
@@ -74,13 +76,17 @@ const playerModule = player()
 
 function gameBoard () {
 
+    let boardResetArray = document.querySelectorAll(".tile")
     const rows = 3
     const columns = 3
     let board = []
     const getBoard = () => board
 
     const setBoard = function () {
-    
+        
+        for (let i = 0; i < boardResetArray.length; i++) {
+            boardResetArray[i].textContent = ""
+        }
         board = []
         for (let i = 0; i < rows; i++) {
             board[i] = []
@@ -106,21 +112,27 @@ function gameController () {
     
     // method to choose the tile for the current active player and to check the win condition in between turns.
 
-   const chooseTile = function (row, column) {
+   const chooseTile = function (row, column, element) {
         
-        if (currentGameBoard.getBoard()[row][column] === "-") {
+        if (currentGameBoard.getBoard()[row][column] === "-" && gameControl.getGameStatus() === "gameActive") {
             currentGameBoard.getBoard()[row][column] = getActivePlayerObj().token
-            gameControl.checkWinCondition()
-            if (gameControl.currentGameStatus === "gameOver") {
-              console.log("Game is over, start a new game.")  
-            } else if (gameControl.getGameStatus() === "gameActive") {
-            gameControl.switchPlayer()
-            console.log(`It is ${getActivePlayerObj().title}'s turn`)
-            console.log(currentGameBoard.getBoard()) 
-            }
-            return currentGameBoard.getBoard()
+            element.textContent = getActivePlayerObj().token
+            
+                if (gameControl.checkWinCondition() === "win") {
+                    currentGameStatus = gameControl.gameStatuses.gameOver
+                    console.log(`${getActivePlayerObj().title} wins!`)
+                } else if (gameControl.checkWinCondition() === "tie") {
+                    currentGameStatus = gameControl.gameStatuses.gameOver
+                    console.log("It's a tie!")
+                } else {
+                    gameControl.switchPlayer()
+                    console.log(`It is ${getActivePlayerObj().title}'s turn`)
+                    console.log(currentGameBoard.getBoard())} 
+        
+        } else if (gameControl.getGameStatus() === gameControl.gameStatuses.gameOver) {
+                console.log("Game is over, start a new game.")  
         } else {
-            console.log("Choose a different square")
+            console.log("That tile is already taken, choose another tile.")
         }
     }
 
@@ -150,10 +162,10 @@ function gameController () {
 
         (currentGameBoard.getBoard()[0][2] === currentGameBoard.getBoard()[1][1] && 
         currentGameBoard.getBoard()[1][1] === currentGameBoard.getBoard()[2][0] && currentGameBoard.getBoard()[0][2] != '-')) {
-            
-            gameControl.currentGameStatus = gameControl.gameStatuses.gameOver
-            console.log(`${getActivePlayerObj().title} wins!`)
-        } 
+            return "win"
+        } else if (currentGameBoard.getBoard().flat().every(element => element !== "-")) {
+            return "tie"
+        }
 
     }
     
@@ -207,3 +219,58 @@ const gameControl = gameController()
 
 
 
+// **************************************
+// DOM manipulation
+
+
+
+const tileOneEle = document.getElementById("tile-one")
+const tileTwoEle = document.getElementById("tile-two")
+const tileThreeEle = document.getElementById("tile-three")
+const tileFourEle = document.getElementById("tile-four")
+const tileFiveEle = document.getElementById("tile-five")
+const tileSixEle = document.getElementById("tile-six")
+const tileSevenEle = document.getElementById("tile-seven")
+const tileEightEle = document.getElementById("tile-eight")
+const tileNineEle = document.getElementById("tile-nine")
+
+
+
+
+
+
+tileOneEle.addEventListener("click", function () {
+    gameControl.chooseTile(0, 0, this)
+})
+
+tileTwoEle.addEventListener("click", function () {
+    gameControl.chooseTile(0, 1, this)
+})
+
+tileThreeEle.addEventListener("click", function () {
+    gameControl.chooseTile(0, 2, this)
+})
+
+tileFourEle.addEventListener("click", function () {
+    gameControl.chooseTile(1, 0, this)
+})
+
+tileFiveEle.addEventListener("click", function () {
+    gameControl.chooseTile(1, 1, this)
+})
+
+tileSixEle.addEventListener("click", function () {
+    gameControl.chooseTile(1, 2, this)
+})
+
+tileSevenEle.addEventListener("click", function () {
+    gameControl.chooseTile(2, 0, this)
+})
+
+tileEightEle.addEventListener("click", function () {
+    gameControl.chooseTile(2, 1, this)
+})
+
+tileNineEle.addEventListener("click", function () {
+    gameControl.chooseTile(2, 2, this)
+})

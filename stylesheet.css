@@ -1,0 +1,78 @@
+html {
+    min-height: 99vh;
+}
+
+.header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 5vh;
+    font-size: 3rem;
+    margin-top: 2.5rem
+}
+
+.game-container {
+    min-height: 95vh;
+}
+
+.game-board {
+    display: grid;
+    grid-template-rows: (repeat(3, 10rem));
+    grid-template-columns: .5fr repeat(3, 10rem) .5fr;
+    margin-top: 15rem;
+}
+
+.row-one {
+    grid-row: 1/2;
+}
+
+.row-two {
+    grid-row: 2/3;
+}
+
+.row-three {
+    grid-row: 3/4;
+}
+
+
+.row {
+    display: grid;
+    grid-template-columns: .5fr repeat(3, 10rem) .5fr;
+
+    min-height: 3rem;
+}
+
+.column-one {
+    grid-column: 2/3;
+}
+
+.column-two {
+    grid-column: 3/4;
+}
+
+.column-three {
+    grid-column: 4/5;
+}
+
+.tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    min-width: 10rem;
+    min-height: 10rem;
+    border-style: solid;
+    border-width: .2rem;
+    border-color: black;
+    font-size: 7rem;
+    font-weight: bold;
+}
+
+#tile-one {
+    align-self: flex-end;
+}
+
+.tile:hover {
+    background-color: lightgray;
+}
