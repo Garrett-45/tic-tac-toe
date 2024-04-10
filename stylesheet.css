@@ -11,6 +11,34 @@ html {
     margin-top: 2.5rem
 }
 
+.start-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin-top: 3.5rem;
+}
+
+.start-button {
+    background-color: lightgray;
+    border-style: solid;
+    border-width: .2rem;
+    border-color: black;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 1rem;
+    font-size: 2rem;
+}
+
+.message-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin-top: 2.5rem;
+}
+
 .game-container {
     min-height: 95vh;
 }
@@ -19,7 +47,7 @@ html {
     display: grid;
     grid-template-rows: (repeat(3, 10rem));
     grid-template-columns: .5fr repeat(3, 10rem) .5fr;
-    margin-top: 15rem;
+    margin-top: 3rem;
 }
 
 .row-one {

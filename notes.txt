@@ -1,3 +1,7 @@
 Features to be added
 
-
+- add message to start game if player tries to pick a tile before starting
+- add start button
+- add disabled tiles before game starts
+- add disabled tiles after game concludes
+- highlight winning tiles?

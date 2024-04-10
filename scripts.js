@@ -120,14 +120,18 @@ function gameController () {
             
                 if (gameControl.checkWinCondition() === "win") {
                     currentGameStatus = gameControl.gameStatuses.gameOver
-                    console.log(`${getActivePlayerObj().title} wins!`)
+                    winLoseMessageEle.textContent = `${getActivePlayerObj().title} wins!`
+                    displayInstructionsMessage()
                 } else if (gameControl.checkWinCondition() === "tie") {
                     currentGameStatus = gameControl.gameStatuses.gameOver
-                    console.log("It's a tie!")
+                    winLoseMessageEle.textContent = "It's a tie!"
+                    displayInstructionsMessage()
                 } else {
                     gameControl.switchPlayer()
                     console.log(`It is ${getActivePlayerObj().title}'s turn`)
-                    console.log(currentGameBoard.getBoard())} 
+                    winLoseMessageEle.textContent = "" 
+                    displayInstructionsMessage()
+                }
         
         } else if (gameControl.getGameStatus() === gameControl.gameStatuses.gameOver) {
                 console.log("Game is over, start a new game.")  
@@ -174,9 +178,11 @@ function gameController () {
     const switchPlayer = function () {
         if (activePlayer === playerModule.players[0]) {
             activePlayer = playerModule.players[1]
+            displayInstructionsMessage()
             return activePlayer
         } else {
             activePlayer = playerModule.players[0]
+            displayInstructionsMessage()
             return activePlayer
         }
 
@@ -190,6 +196,8 @@ function gameController () {
        activePlayer = playerModule.players[0]
        currentGameStatus = gameControl.gameStatuses.gameActive
        currentGameBoard.setBoard()
+       displayInstructionsMessage()
+       winLoseMessageEle.textContent = ""
     }
 
     // possible game statuses
@@ -218,6 +226,16 @@ function gameController () {
 const gameControl = gameController()
 
 
+// display messages to help the learner
+
+const displayInstructionsMessage = function () {
+    if (gameControl.getGameStatus() === gameControl.gameStatuses.gameActive) {
+        messageEle.textContent = `It is ${gameControl.getActivePlayerObj().title}'s turn`
+    } else if (gameControl.getGameStatus() === gameControl.gameStatuses.gameOver) {
+        messageEle.textContent = "Game is over, start a new game."
+    }
+}
+
 
 // **************************************
 // DOM manipulation
@@ -233,6 +251,11 @@ const tileSixEle = document.getElementById("tile-six")
 const tileSevenEle = document.getElementById("tile-seven")
 const tileEightEle = document.getElementById("tile-eight")
 const tileNineEle = document.getElementById("tile-nine")
+
+const startButton = document.getElementById("start-button")
+
+const messageEle = document.getElementById("message")
+const winLoseMessageEle = document.getElementById("win-lose-message")
 
 
 
@@ -273,4 +296,8 @@ tileEightEle.addEventListener("click", function () {
 
 tileNineEle.addEventListener("click", function () {
     gameControl.chooseTile(2, 2, this)
+})
+
+startButton.addEventListener("click", function () {
+    gameControl.startGame()
 })
